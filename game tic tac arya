@@ -1,5 +1,3 @@
-# arya
-game tic tac
 package main
 
 import (
