@@ -1,0 +1,156 @@
+package main
+
+import (
+	"fmt"
+)
+
+type Node struct {
+	nama string
+	next *Node
+}
+
+type LinkedList struct {
+	head *Node
+}
+
+func (ll *LinkedList) tambahDiAwal(nama string) {
+	newNode := &Node{nama: nama, next: ll.head}
+	ll.head = newNode
+}
+
+func (ll *LinkedList) tambahDiAkhir(nama string) {
+	newNode := &Node{nama: nama, next: nil}
+
+	if ll.head == nil {
+		ll.head = newNode
+		return
+	}
+
+	current := ll.head
+	for current.next != nil {
+		current = current.next
+	}
+	current.next = newNode
+}
+
+func (ll *LinkedList) tambahSetelah(prevNama string, namaBaru string) bool {
+	current := ll.head
+	for current != nil {
+		if current.nama == prevNama {
+			newNode := &Node{nama: namaBaru, next: current.next}
+			current.next = newNode
+			return true
+		}
+		current = current.next
+	}
+	return false
+}
+
+func (ll *LinkedList) hapus(nama string) bool {
+	if ll.head == nil {
+		return false // Linked list kosong
+	}
+
+	if ll.head.nama == nama {
+		ll.head = ll.head.next
+		return true
+	}
+
+	current := ll.head
+	for current.next != nil {
+		if current.next.nama == nama {
+			current.next = current.next.next
+			return true
+		}
+		current = current.next
+	}
+	return false // Nama tidak ditemukan dalam linked list
+}
+
+func (ll *LinkedList) ubah(namaLama string, namaBaru string) bool {
+	current := ll.head
+	for current != nil {
+		if current.nama == namaLama {
+			current.nama = namaBaru
+			return true
+		}
+		current = current.next
+	}
+	return false
+}
+
+func (ll *LinkedList) tampilkan() {
+	current := ll.head
+	for current != nil {
+		fmt.Printf("%s -> ", current.nama)
+		current = current.next
+	}
+	fmt.Println("nil")
+}
+
+func main() {
+	ll := LinkedList{}
+
+	for {
+		fmt.Println("\nMenu:")
+		fmt.Println("1. Tambah di awal")
+		fmt.Println("2. Tambah di akhir")
+		fmt.Println("3. Tambah setelah")
+		fmt.Println("4. Hapus")
+		fmt.Println("5. Ubah")
+		fmt.Println("6. Tampilkan")
+		fmt.Println("7. Keluar")
+		fmt.Print("Pilih menu: ")
+
+		var pilihan int
+		fmt.Scanln(&pilihan)
+
+		switch pilihan {
+		case 1:
+			fmt.Print("Masukkan nama untuk ditambah di awal: ")
+			var nama string
+			fmt.Scanln(&nama)
+			ll.tambahDiAwal(nama)
+		case 2:
+			fmt.Print("Masukkan nama untuk ditambah di akhir: ")
+			var nama string
+			fmt.Scanln(&nama)
+			ll.tambahDiAkhir(nama)
+		case 3:
+			fmt.Print("Masukkan nama sebelumnya: ")
+			var prevNama string
+			fmt.Scanln(&prevNama)
+			fmt.Print("Masukkan nama baru: ")
+			var namaBaru string
+			fmt.Scanln(&namaBaru)
+			if !ll.tambahSetelah(prevNama, namaBaru) {
+				fmt.Println("Nama sebelumnya tidak ditemukan")
+			}
+		case 4:
+			fmt.Print("Masukkan nama untuk dihapus: ")
+			var nama string
+			fmt.Scanln(&nama)
+			if !ll.hapus(nama) {
+				fmt.Println("Nama tidak ditemukan")
+			}
+		case 5:
+			fmt.Print("Masukkan nama yang ingin diubah: ")
+			var namaLama string
+			fmt.Scanln(&namaLama)
+			fmt.Print("Masukkan nama baru: ")
+			var namaBaru string
+			fmt.Scanln(&namaBaru)
+			if !ll.ubah(namaLama, namaBaru) {
+				fmt.Println("Nama yang akan diubah tidak ditemukan")
+			}
+		case 6:
+			fmt.Println("Linked List:")
+			ll.tampilkan()
+		case 7:
+			fmt.Println("Program selesai")
+			return
+		default:
+			fmt.Println("Pilihan tidak valid")
+		}
+	}
+}
