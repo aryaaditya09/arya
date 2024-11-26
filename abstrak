@@ -1,0 +1,51 @@
+package main
+
+import "fmt"
+
+// Mamalia: Struktur yang mewakili makhluk hidup tak berakal (mamalia).
+type Mamalia struct {
+	Jenis   string // Jenis mamalia, seperti "Manusia", "Kucing", "Anjing"
+	Habitat string // Habitat mamalia, seperti "Darat", "Air"
+}
+
+// Manusia: Struktur yang mewakili manusia sebagai subkategori mamalia yang memiliki akal.
+type Manusia struct {
+	Mamalia           // Manusia adalah Mamalia, mewarisi atribut dari Mamalia
+	Nama       string // Nama manusia
+	Umur       int    // Umur manusia
+	Kebangsaan string // Kebangsaan manusia
+}
+
+// Mahasiswa: Struktur yang mewakili mahasiswa sebagai subkategori manusia, yaitu pelajar.
+type Mahasiswa struct {
+	Manusia         // Mahasiswa adalah Manusia, mewarisi atribut dari Manusia
+	Fakultas string // Fakultas tempat mahasiswa belajar
+	Jurusan  string // Jurusan yang diambil oleh mahasiswa
+}
+
+func main() {
+	// Membuat objek Mahasiswa yang meng-embed Manusia yang meng-embed Mamalia
+	mahasiswa := Mahasiswa{
+		Manusia: Manusia{
+			Mamalia: Mamalia{
+				Jenis:   "Manusia", // Jenis Mamalia adalah Manusia
+				Habitat: "Darat",   // Habitat Mamalia adalah darat
+			},
+			Nama:       "Arya",
+			Umur:       20,
+			Kebangsaan: "Indonesia",
+		},
+		Fakultas: "Mipa",
+		Jurusan:  "Ilmu komputer",
+	}
+
+	// Menampilkan informasi mahasiswa
+	fmt.Println("Informasi Mahasiswa:")
+	fmt.Println("Nama:", mahasiswa.Nama)
+	fmt.Println("Umur:", mahasiswa.Umur)
+	fmt.Println("Kebangsaan:", mahasiswa.Kebangsaan)
+	fmt.Println("Fakultas:", mahasiswa.Fakultas)
+	fmt.Println("Jurusan:", mahasiswa.Jurusan)
+	fmt.Println("Jenis Mamalia:", mahasiswa.Mamalia.Jenis)
+	fmt.Println("Habitat Mamalia:", mahasiswa.Mamalia.Habitat)
+}
